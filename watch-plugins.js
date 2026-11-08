@@ -4,7 +4,7 @@
     if (typeof Lampa === 'undefined' || window.WatchPlugins) return;
 
     var NAME = 'Watch Plugins';
-    var VERSION = '1.0.1';
+    var VERSION = '1.1.0';
     var COMPONENT = 'watch_plugins';
     var DEFAULT_BASE = 'https://watch-project-sk.github.io/watch-plugin/';
     var KEY_BASE = 'watch_plugins_base';
@@ -154,13 +154,65 @@
         Lampa.SettingsApi.addParam(param);
     }
 
-    function registerSettings(list) {
+    var sectionCount = 0;
+
+    function section(title) {
+        addParam({
+            param: { name: 'watch_plugins_section_' + (sectionCount++), type: 'title' },
+            field: { name: title }
+        });
+    }
+
+    function indent(param) {
+        var render = param.onRender;
+        param.onRender = function (item) {
+            try { item.css('padding-left', '2em'); } catch (e) {}
+            if (render) render(item);
+        };
+        return param;
+    }
+
+    function pluginSwitch(plugin) {
+        addParam({
+            param: { name: KEY_ON + plugin.id, type: 'trigger', 'default': Boolean(plugin.default) },
+            field: { name: plugin.name, description: plugin.description || '' },
+            onChange: notifyRestart,
+            onRender: function (item) {
+                var text = (plugin.description ? plugin.description + ' · ' : '') + statusText(plugin);
+                item.find('.settings-param__descr').text(text);
+            }
+        });
+        (queued[plugin.id] || []).forEach(function (param) { addParam(indent(param)); });
+    }
+
+    function groupPlugins(list, categories) {
+        var groups = [];
+        var known = {};
+        (categories || []).forEach(function (category) {
+            known[category.id] = { name: category.name, plugins: [] };
+            groups.push(known[category.id]);
+        });
+        var rest = { name: 'Інше', plugins: [] };
+        list.forEach(function (plugin) {
+            var group = plugin.category && known[plugin.category] ? known[plugin.category] : rest;
+            group.plugins.push(plugin);
+        });
+        if (rest.plugins.length) groups.push(rest);
+        return groups.filter(function (group) { return group.plugins.length; });
+    }
+
+    function registerSettings(list, categories) {
         if (settingsDone) return;
         settingsDone = true;
         Lampa.SettingsApi.addComponent({ component: COMPONENT, name: NAME, icon: ICON });
+        groupPlugins(list, categories).forEach(function (group) {
+            section(group.name);
+            group.plugins.forEach(pluginSwitch);
+        });
+        section('Керування Watch Plugins');
         addParam({
             param: { name: 'watch_plugins_about', type: 'static' },
-            field: { name: 'Watch Plugins', description: 'Менеджер плагінів v' + VERSION + '. Зміни вмикання діють після перезавантаження.' }
+            field: { name: 'Версія менеджера', description: VERSION + '. Зміни вмикання діють після перезавантаження.' }
         });
         addParam({
             param: { name: KEY_BASE, type: 'input', values: '', 'default': '' },
@@ -172,27 +224,8 @@
         });
         addParam({
             param: { name: 'watch_plugins_reload', type: 'button' },
-            field: { name: 'Перезавантажити застосунок' },
+            field: { name: 'Перезавантажити застосунок', description: 'Застосувати зміни вмикання плагінів.' },
             onChange: reload
-        });
-        list.forEach(function (plugin) {
-            addParam({
-                param: { name: 'watch_plugins_title_' + plugin.id, type: 'title' },
-                field: { name: plugin.name }
-            });
-            addParam({
-                param: { name: KEY_ON + plugin.id, type: 'trigger', 'default': Boolean(plugin.default) },
-                field: { name: 'Увімкнено', description: plugin.description || '' },
-                onChange: notifyRestart
-            });
-            addParam({
-                param: { name: 'watch_plugins_state_' + plugin.id, type: 'static' },
-                field: { name: 'Стан', description: '…' },
-                onRender: function (item) {
-                    item.find('.settings-param__descr').text(statusText(plugin));
-                }
-            });
-            (queued[plugin.id] || []).forEach(addParam);
         });
     }
 
@@ -248,12 +281,12 @@
             }
 
             function finish() {
-                try { registerSettings(list); } catch (e) { console.error(NAME, 'settings error', e); }
+                try { registerSettings(list, data.categories); } catch (e) { console.error(NAME, 'settings error', e); }
                 addMenuItem();
                 console.log(NAME, 'loaded', VERSION);
             }
         }, function () {
-            try { registerSettings([]); } catch (e) { console.error(NAME, 'settings error', e); }
+            try { registerSettings([], []); } catch (e) { console.error(NAME, 'settings error', e); }
             addMenuItem();
             if (Lampa.Noty) Lampa.Noty.show('Watch Plugins: не вдалося завантажити список плагінів');
         });
