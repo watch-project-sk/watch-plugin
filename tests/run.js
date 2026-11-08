@@ -74,6 +74,21 @@ check('voices: store writes sorted shards and reloads them', () => {
     fs.rmSync(dir, { recursive: true, force: true });
 });
 
+check('every input param in plugin sources declares string values', () => {
+    const root = path.join(__dirname, '..');
+    const files = ['watch-plugins.js'];
+    fs.readdirSync(path.join(root, 'plugins')).forEach((dir) => {
+        fs.readdirSync(path.join(root, 'plugins', dir)).forEach((name) => {
+            if (/\.js$/.test(name)) files.push(path.join('plugins', dir, name));
+        });
+    });
+    files.forEach((file) => {
+        const text = fs.readFileSync(path.join(root, file), 'utf8');
+        const found = text.match(/type: 'input'[^}]*/g) || [];
+        found.forEach((chunk) => assert.ok(/values: ''/.test(chunk), file + ': ' + chunk));
+    });
+});
+
 check('manifest: every plugin file exists and ids are unique', () => {
     const root = path.join(__dirname, '..');
     const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));

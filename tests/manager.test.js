@@ -104,15 +104,15 @@ const tests = {
             'https://darkestclouds.github.io/plugins/applecation/applecation.min.js',
             BASE + 'plugins/card-details/card-details.js?v=1.0.0',
             BASE + 'plugins/streaming-tabs/streaming-tabs.js?v=1.0.0',
-            BASE + 'plugins/ua-torrent-flow/ua-torrent-flow.js?v=2.1.0'
+            BASE + 'plugins/ua-torrent-flow/ua-torrent-flow.js?v=2.1.1'
         ]);
     },
 
     async 'toggle off removes a plugin, toggle on adds multi-file plugins in file order'() {
         const env = await boot({ storage: { watch_plugins_on_streaming_tabs_x: true, 'watch_plugins_on_streaming-tabs': false, watch_plugins_on_trakt: 'true', 'watch_plugins_on_ua-torrent-flow': false, 'watch_plugins_on_card-details': false } });
         assert.deepStrictEqual(env.loaded, [
-            BASE + 'plugins/trakt/trakt-client.js?v=1.0.0',
-            BASE + 'plugins/trakt/trakt.js?v=1.0.0'
+            BASE + 'plugins/trakt/trakt-client.js?v=1.0.1',
+            BASE + 'plugins/trakt/trakt.js?v=1.0.1'
         ]);
     },
 
@@ -141,6 +141,13 @@ const tests = {
         env.params.forEach((p) => assert.strictEqual(p.component, 'watch_plugins'));
         const trigger = env.params.find((p) => p.param.name === 'watch_plugins_on_torserver-address');
         assert.strictEqual(trigger.param.default, false);
+    },
+
+    async 'input params declare string values, as Lampa requires'() {
+        const env = await boot();
+        const inputs = env.params.filter((p) => p.param.type === 'input');
+        assert.ok(inputs.length >= 2);
+        inputs.forEach((p) => assert.strictEqual(p.param.values, ''));
     },
 
     async 'settings for disabled plugins are still listed so they can be switched on'() {

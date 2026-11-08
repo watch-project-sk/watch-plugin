@@ -16,7 +16,9 @@
       "path": "plugins/card-details/card-details.js",
       "version": "1.0.0",
       "default": true,
-      "requires": ["applecation"]
+      "requires": [
+        "applecation"
+      ]
     },
     {
       "id": "streaming-tabs",
@@ -31,7 +33,7 @@
       "name": "TorrServer Address",
       "description": "Overrides the TorrServer address saved in Lampa.",
       "path": "plugins/torserver-address/torserver-address.js",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "default": false
     },
     {
@@ -39,7 +41,7 @@
       "name": "UA Torrent Flow",
       "description": "Better torrent list with voice-over info and a torrent file screen.",
       "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "default": true
     },
     {
@@ -47,8 +49,11 @@
       "name": "Trakt",
       "description": "Trakt recommendations, watchlist, calendar and scrobbling with your own Trakt app.",
       "path": "plugins/trakt/trakt.js",
-      "files": ["plugins/trakt/trakt-client.js", "plugins/trakt/trakt.js"],
-      "version": "1.0.0",
+      "files": [
+        "plugins/trakt/trakt-client.js",
+        "plugins/trakt/trakt.js"
+      ],
+      "version": "1.0.1",
       "default": false
     }
   ]

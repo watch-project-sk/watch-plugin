@@ -4,7 +4,7 @@
     if (typeof Lampa === 'undefined' || window.WatchPlugins) return;
 
     var NAME = 'Watch Plugins';
-    var VERSION = '1.0.0';
+    var VERSION = '1.0.1';
     var COMPONENT = 'watch_plugins';
     var DEFAULT_BASE = 'https://watch-project-sk.github.io/watch-plugin/';
     var KEY_BASE = 'watch_plugins_base';
@@ -163,11 +163,11 @@
             field: { name: 'Watch Plugins', description: 'Менеджер плагінів v' + VERSION + '. Зміни вмикання діють після перезавантаження.' }
         });
         addParam({
-            param: { name: KEY_BASE, type: 'input', 'default': '' },
+            param: { name: KEY_BASE, type: 'input', values: '', 'default': '' },
             field: { name: 'Адреса репозиторію', description: 'Порожньо: тека, звідки завантажено менеджер.' }
         });
         addParam({
-            param: { name: KEY_EXTRA, type: 'input', 'default': '' },
+            param: { name: KEY_EXTRA, type: 'input', values: '', 'default': '' },
             field: { name: 'Додаткові плагіни (URL)', description: 'Адреси скриптів через пробіл або кому.' }
         });
         addParam({

@@ -856,12 +856,12 @@
             }
         };
         addParam({
-            param: { name: KEY_CLIENT_ID, type: 'input', 'default': '' },
+            param: { name: KEY_CLIENT_ID, type: 'input', values: '', 'default': '' },
             field: { name: 'Client ID', description: 'Створіть власний додаток на trakt.tv/oauth/applications з redirect URI urn:ietf:wg:oauth:2.0:oob.' },
             onChange: credentialsChanged
         });
         addParam({
-            param: { name: KEY_CLIENT_SECRET, type: 'input', 'default': '' },
+            param: { name: KEY_CLIENT_SECRET, type: 'input', values: '', 'default': '' },
             field: { name: 'Client Secret', description: 'Зберігається лише на цьому пристрої.' },
             onChange: credentialsChanged
         });
