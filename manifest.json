@@ -43,11 +43,20 @@
     {
       "id": "ua-torrent-flow",
       "name": "Зручний список торентів",
-      "description": "Топ-3 роздачі, озвучки з Toloka та екран вибору файлів серіалу.",
+      "description": "Топ-3 роздачі та озвучки з Toloka прямо в списку торентів.",
       "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
-      "version": "2.1.2",
+      "version": "2.2.0",
       "default": true,
       "category": "torrents"
+    },
+    {
+      "id": "torrent-files-screen",
+      "name": "Екран файлів торента",
+      "description": "Свій екран вибору серій торента з прогресом. Вимкнено: замінює стандартне вікно Lampa.",
+      "category": "torrents",
+      "path": "plugins/torrent-files-screen/torrent-files-screen.js",
+      "version": "1.0.0",
+      "default": false
     },
     {
       "id": "trakt",
