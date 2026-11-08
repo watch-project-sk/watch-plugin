@@ -857,17 +857,17 @@
         };
         addParam({
             param: { name: KEY_CLIENT_ID, type: 'input', values: '', 'default': '' },
-            field: { name: 'Client ID', description: 'Створіть власний додаток на trakt.tv/oauth/applications з redirect URI urn:ietf:wg:oauth:2.0:oob.' },
+            field: { name: 'Trakt: Client ID', description: 'З вашого додатка на trakt.tv/oauth/applications (redirect URI: urn:ietf:wg:oauth:2.0:oob).' },
             onChange: credentialsChanged
         });
         addParam({
             param: { name: KEY_CLIENT_SECRET, type: 'input', values: '', 'default': '' },
-            field: { name: 'Client Secret', description: 'Зберігається лише на цьому пристрої.' },
+            field: { name: 'Trakt: Client Secret', description: 'З того ж додатка. Зберігається лише на цьому пристрої.' },
             onChange: credentialsChanged
         });
         addParam({
             param: { name: 'trakt_bridge_status', type: 'static' },
-            field: { name: 'Статус', description: '…' },
+            field: { name: 'Стан входу', description: '…' },
             onRender: function (item) {
                 refreshStatus(function (s) {
                     item.find('.settings-param__descr').text(statusText(s));
@@ -876,7 +876,7 @@
         });
         addParam({
             param: { name: 'trakt_bridge_login', type: 'button' },
-            field: { name: 'Увійти в Trakt', description: 'Вхід через код підтвердження. Токени зберігаються лише на цьому пристрої.' },
+            field: { name: 'Увійти в Trakt', description: 'Покаже код, який треба ввести на trakt.tv/activate.' },
             onChange: openLogin
         });
         addParam({
@@ -886,16 +886,16 @@
         });
         addParam({
             param: { name: SCROBBLE_KEY, type: 'trigger', 'default': true },
-            field: { name: 'Відстежувати перегляди', description: 'Надсилати в Trakt, що ви дивитесь, і відмічати переглянутим при виході з плеєра на 80% і більше.' }
+            field: { name: 'Записувати перегляди', description: 'Надсилає в Trakt, що ви дивитесь, і позначає переглянутим після 80%.' }
         });
         addParam({
             param: { name: 'trakt_bridge_import', type: 'button' },
-            field: { name: 'Імпортувати історію Лампи', description: 'Відправити в Trakt усе, що в Лампі переглянуто на 90% і більше.' },
+            field: { name: 'Імпортувати історію з Lampa', description: 'Відправляє в Trakt усе, що в Lampa переглянуто на 90% і більше.' },
             onChange: importHistory
         });
         addParam({
             param: { name: 'trakt_bridge_about', type: 'static' },
-            field: { name: 'Про Trakt', description: ATTRIBUTION }
+            field: { name: 'Про Trakt', description: 'Плагін використовує Trakt, але не схвалений і не сертифікований Trakt.' }
         });
     }
 

@@ -9,6 +9,10 @@ const source = fs.readFileSync(path.join(__dirname, '..', 'watch-plugins.js'), '
 const realManifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
 const BASE = 'https://example.test/wp/';
 
+function ver(id) {
+    return realManifest.plugins.find((p) => p.id === id).version;
+}
+
 function settle() {
     return new Promise((resolve) => setImmediate(resolve));
 }
@@ -102,17 +106,17 @@ const tests = {
         const env = await boot();
         assert.deepStrictEqual(env.loaded, [
             'https://darkestclouds.github.io/plugins/applecation/applecation.min.js',
-            BASE + 'plugins/card-details/card-details.js?v=1.0.0',
-            BASE + 'plugins/streaming-tabs/streaming-tabs.js?v=1.0.0',
-            BASE + 'plugins/ua-torrent-flow/ua-torrent-flow.js?v=2.1.1'
+            BASE + 'plugins/card-details/card-details.js?v=' + ver('card-details'),
+            BASE + 'plugins/streaming-tabs/streaming-tabs.js?v=' + ver('streaming-tabs'),
+            BASE + 'plugins/ua-torrent-flow/ua-torrent-flow.js?v=' + ver('ua-torrent-flow')
         ]);
     },
 
     async 'toggle off removes a plugin, toggle on adds multi-file plugins in file order'() {
         const env = await boot({ storage: { watch_plugins_on_streaming_tabs_x: true, 'watch_plugins_on_streaming-tabs': false, watch_plugins_on_trakt: 'true', 'watch_plugins_on_ua-torrent-flow': false, 'watch_plugins_on_card-details': false } });
         assert.deepStrictEqual(env.loaded, [
-            BASE + 'plugins/trakt/trakt-client.js?v=1.0.1',
-            BASE + 'plugins/trakt/trakt.js?v=1.0.1'
+            BASE + 'plugins/trakt/trakt-client.js?v=' + ver('trakt'),
+            BASE + 'plugins/trakt/trakt.js?v=' + ver('trakt')
         ]);
     },
 
@@ -123,7 +127,7 @@ const tests = {
         const trigger = env.params.find((p) => p.param.name === 'watch_plugins_on_card-details');
         const item = { find: () => ({ text: (t) => { item.text = t; } }) };
         trigger.onRender(item);
-        assert.ok(/помилка/.test(item.text));
+        assert.ok(/Не вдалося завантажити/.test(item.text));
     },
 
     async 'settings are grouped by category with plugin settings under their switch'() {
@@ -137,17 +141,17 @@ const tests = {
         env.params.forEach((p) => assert.strictEqual(p.component, 'watch_plugins'));
         const layout = env.params.map((p) => (p.param.type === 'title' ? '# ' + p.field.name : p.param.name));
         const at = (name) => layout.indexOf(name);
-        assert.strictEqual(layout[0], '# Картка фільму');
-        assert.ok(at('# Картка фільму') < at('watch_plugins_on_card-details'));
+        assert.strictEqual(layout[0], '# Вигляд картки фільму');
+        assert.ok(at('# Вигляд картки фільму') < at('watch_plugins_on_card-details'));
         assert.ok(at('watch_plugins_on_card-details') < at('# Головна сторінка'));
         assert.deepStrictEqual(layout.slice(at('# Головна сторінка'), at('# Головна сторінка') + 3), ['# Головна сторінка', 'watch_plugins_on_streaming-tabs', 'region_param']);
-        assert.ok(at('# Торенти та плеєр') < at('watch_plugins_on_ua-torrent-flow'));
-        assert.ok(at('watch_plugins_on_torserver-address') < at('# Сервіси та облікові записи'));
-        assert.ok(at('watch_plugins_on_trakt') > at('# Сервіси та облікові записи'));
-        assert.strictEqual(layout[layout.length - 5], '# Керування Watch Plugins');
+        assert.ok(at('# Торенти та TorrServer') < at('watch_plugins_on_ua-torrent-flow'));
+        assert.ok(at('watch_plugins_on_torserver-address') < at('# Облікові записи'));
+        assert.ok(at('watch_plugins_on_trakt') > at('# Облікові записи'));
+        assert.strictEqual(layout[layout.length - 5], '# Watch Plugins');
         const trigger = env.params.find((p) => p.param.name === 'watch_plugins_on_torserver-address');
         assert.strictEqual(trigger.param.default, false);
-        assert.strictEqual(trigger.field.name, 'Адреса TorrServer');
+        assert.strictEqual(trigger.field.name, 'Власна адреса TorrServer');
     },
 
     async 'plugins without a known category land in a fallback section'() {
@@ -178,7 +182,7 @@ const tests = {
 
     async 'custom base url is used for manifest-relative files'() {
         const env = await boot({ storage: { watch_plugins_base: 'https://fork.test/repo' } });
-        assert.ok(env.loaded.indexOf('https://fork.test/repo/plugins/streaming-tabs/streaming-tabs.js?v=1.0.0') !== -1);
+        assert.ok(env.loaded.indexOf('https://fork.test/repo/plugins/streaming-tabs/streaming-tabs.js?v=' + ver('streaming-tabs')) !== -1);
     },
 
     async 'manifest failure still registers settings and tells the user'() {
