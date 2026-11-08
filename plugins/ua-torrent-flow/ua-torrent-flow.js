@@ -6,7 +6,7 @@
 
     var ID = 'ua_torrent_flow';
     var NAME = 'UA Torrent Flow';
-    var VERSION = '2.1.2';
+    var VERSION = '2.1.3';
     var TOP_COUNT = 3;
     var lastMovie = null;
     var SCRIPT_SRC = (typeof document !== 'undefined' && document.currentScript && document.currentScript.src) || '';
@@ -971,13 +971,6 @@
         return entries;
     }
 
-    function rawStore() {
-        var raw = window.localStorage.getItem(Lampa.Timeline.filename());
-        if (!raw) return null;
-        var parsed = JSON.parse(raw);
-        return parsed && typeof parsed === 'object' ? parsed : null;
-    }
-
     function primeModal() {
         try {
             Lampa.Modal.close();
@@ -1005,7 +998,6 @@
         var destroyed = false;
         var timer = null;
         var onVisible = null;
-        var lastRaw = null;
 
         function progressOf(entry) {
             var view = entry.element.timeline;
@@ -1063,25 +1055,6 @@
         }
 
         function syncViews() {
-            try {
-                var fresh = rawStore();
-                if (fresh) {
-                    Lampa.Storage.set(Lampa.Timeline.filename(), fresh);
-                    Lampa.Timeline.read(true);
-                }
-                cards.forEach(function (entry) {
-                    var view = entry.element.timeline;
-                    if (!view || !view.hash) return;
-                    var meta = view.card ? { card: view.card, season: view.season, episode: view.episode } : undefined;
-                    var latest = Lampa.Timeline.view(view.hash, meta);
-                    view.percent = latest.percent;
-                    view.time = latest.time;
-                    if (latest.duration) view.duration = latest.duration;
-                });
-                lastRaw = window.localStorage.getItem(Lampa.Timeline.filename());
-            } catch (err) {
-                console.error(NAME, 'timeline sync error', err);
-            }
             paintAll();
         }
 
@@ -1266,8 +1239,7 @@
             if (destroyed || !cards.length) return;
             var active = Lampa.Controller.enabled ? Lampa.Controller.enabled().name : 'content';
             if (active !== 'content') return;
-            if (mode === 'files' && window.localStorage.getItem(Lampa.Timeline.filename()) !== lastRaw) syncViews();
-            else paintAll();
+            paintAll();
         }
 
         function startTimer() {

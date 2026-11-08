@@ -45,7 +45,7 @@
       "name": "Зручний список торентів",
       "description": "Топ-3 роздачі, озвучки з Toloka та екран вибору файлів серіалу.",
       "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
-      "version": "2.1.2",
+      "version": "2.1.3",
       "default": true,
       "category": "torrents"
     },
