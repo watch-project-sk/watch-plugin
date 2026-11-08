@@ -120,13 +120,13 @@ const tests = {
         const env = await boot({ broken: ['card-details'] });
         assert.ok(env.loaded.some((u) => u.indexOf('streaming-tabs') !== -1));
         assert.ok(env.loaded.some((u) => u.indexOf('ua-torrent-flow') !== -1));
-        const state = env.params.find((p) => p.param.name === 'watch_plugins_state_card-details');
+        const trigger = env.params.find((p) => p.param.name === 'watch_plugins_on_card-details');
         const item = { find: () => ({ text: (t) => { item.text = t; } }) };
-        state.onRender(item);
+        trigger.onRender(item);
         assert.ok(/помилка/.test(item.text));
     },
 
-    async 'settings: component, manager params, then per plugin title, trigger, state, plugin params'() {
+    async 'settings are grouped by category with plugin settings under their switch'() {
         const env = await boot({
             onScript(src, sandbox) {
                 if (src.indexOf('streaming-tabs') !== -1) sandbox.WatchPlugins.settings('streaming-tabs', [{ param: { name: 'region_param', type: 'select' }, field: { name: 'Region' } }]);
@@ -134,13 +134,28 @@ const tests = {
         });
         assert.strictEqual(env.components.length, 1);
         assert.strictEqual(env.components[0].component, 'watch_plugins');
-        const list = names(env);
-        const at = list.indexOf('watch_plugins_title_streaming-tabs');
-        assert.deepStrictEqual(list.slice(at, at + 4), ['watch_plugins_title_streaming-tabs', 'watch_plugins_on_streaming-tabs', 'watch_plugins_state_streaming-tabs', 'region_param']);
-        assert.ok(list.indexOf('watch_plugins_base') < at);
         env.params.forEach((p) => assert.strictEqual(p.component, 'watch_plugins'));
+        const layout = env.params.map((p) => (p.param.type === 'title' ? '# ' + p.field.name : p.param.name));
+        const at = (name) => layout.indexOf(name);
+        assert.strictEqual(layout[0], '# Картка фільму');
+        assert.ok(at('# Картка фільму') < at('watch_plugins_on_card-details'));
+        assert.ok(at('watch_plugins_on_card-details') < at('# Головна сторінка'));
+        assert.deepStrictEqual(layout.slice(at('# Головна сторінка'), at('# Головна сторінка') + 3), ['# Головна сторінка', 'watch_plugins_on_streaming-tabs', 'region_param']);
+        assert.ok(at('# Торенти та плеєр') < at('watch_plugins_on_ua-torrent-flow'));
+        assert.ok(at('watch_plugins_on_torserver-address') < at('# Сервіси та облікові записи'));
+        assert.ok(at('watch_plugins_on_trakt') > at('# Сервіси та облікові записи'));
+        assert.strictEqual(layout[layout.length - 5], '# Керування Watch Plugins');
         const trigger = env.params.find((p) => p.param.name === 'watch_plugins_on_torserver-address');
         assert.strictEqual(trigger.param.default, false);
+        assert.strictEqual(trigger.field.name, 'Адреса TorrServer');
+    },
+
+    async 'plugins without a known category land in a fallback section'() {
+        const manifest = JSON.parse(JSON.stringify(realManifest));
+        manifest.plugins[1].category = 'unknown';
+        const env = await boot({ manifest });
+        const titles = env.params.filter((p) => p.param.type === 'title').map((p) => p.field.name);
+        assert.strictEqual(titles[titles.length - 2], 'Інше');
     },
 
     async 'input params declare string values, as Lampa requires'() {

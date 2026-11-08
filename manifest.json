@@ -4,57 +4,81 @@
     {
       "id": "applecation",
       "name": "Applecation",
-      "description": "Apple TV style card layout by DarkestClouds. Optional base for Card Details.",
+      "description": "Стиль картки в дусі Apple TV від DarkestClouds. Потрібен для «Деталі картки».",
       "path": "https://darkestclouds.github.io/plugins/applecation/applecation.min.js",
       "version": "external",
-      "default": false
+      "default": false,
+      "category": "card"
     },
     {
       "id": "card-details",
-      "name": "Card Details",
-      "description": "Moves the director into the cast row and removes tags from the card. Addon for Applecation.",
+      "name": "Деталі картки",
+      "description": "Режисер переходить у ряд акторів, зникають теги. Доповнення до Applecation.",
       "path": "plugins/card-details/card-details.js",
       "version": "1.0.0",
       "default": true,
       "requires": [
         "applecation"
-      ]
+      ],
+      "category": "card"
     },
     {
       "id": "streaming-tabs",
-      "name": "Streaming Tabs",
-      "description": "Streaming service tabs on the home page (Netflix, Apple TV+, HBO and others).",
+      "name": "Вкладки стрімінгів",
+      "description": "Вкладки стрімінгових сервісів на головній: Netflix, Apple TV+, HBO та інші.",
       "path": "plugins/streaming-tabs/streaming-tabs.js",
       "version": "1.0.0",
-      "default": true
+      "default": true,
+      "category": "home"
     },
     {
       "id": "torserver-address",
-      "name": "TorrServer Address",
-      "description": "Overrides the TorrServer address saved in Lampa.",
+      "name": "Адреса TorrServer",
+      "description": "Примусово підставляє вашу адресу TorrServer замість збереженої в Lampa.",
       "path": "plugins/torserver-address/torserver-address.js",
       "version": "1.0.1",
-      "default": false
+      "default": false,
+      "category": "torrents"
     },
     {
       "id": "ua-torrent-flow",
-      "name": "UA Torrent Flow",
-      "description": "Better torrent list with voice-over info and a torrent file screen.",
+      "name": "Торенти UA",
+      "description": "Зручний список торентів з озвучками та екран вибору файлів торента.",
       "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
       "version": "2.1.1",
-      "default": true
+      "default": true,
+      "category": "torrents"
     },
     {
       "id": "trakt",
       "name": "Trakt",
-      "description": "Trakt recommendations, watchlist, calendar and scrobbling with your own Trakt app.",
+      "description": "Рекомендації, список перегляду, календар і скробл Trakt через ваш власний додаток.",
       "path": "plugins/trakt/trakt.js",
       "files": [
         "plugins/trakt/trakt-client.js",
         "plugins/trakt/trakt.js"
       ],
       "version": "1.0.1",
-      "default": false
+      "default": false,
+      "category": "services"
+    }
+  ],
+  "categories": [
+    {
+      "id": "card",
+      "name": "Картка фільму"
+    },
+    {
+      "id": "home",
+      "name": "Головна сторінка"
+    },
+    {
+      "id": "torrents",
+      "name": "Торенти та плеєр"
+    },
+    {
+      "id": "services",
+      "name": "Сервіси та облікові записи"
     }
   ]
 }
