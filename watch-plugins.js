@@ -4,7 +4,7 @@
     if (typeof Lampa === 'undefined' || window.WatchPlugins) return;
 
     var NAME = 'Watch Plugins';
-    var VERSION = '1.1.0';
+    var VERSION = '1.2.0';
     var COMPONENT = 'watch_plugins';
     var DEFAULT_BASE = 'https://watch-project-sk.github.io/watch-plugin/';
     var KEY_BASE = 'watch_plugins_base';
@@ -135,18 +135,12 @@
         return String(readKey(KEY_EXTRA, '') || '').split(/[\s,]+/).filter(function (u) { return /^https?:\/\//i.test(u); });
     }
 
-    function statusText(plugin) {
-        var state = statuses[plugin.id];
-        var label = !isOn(plugin) && !state ? 'вимкнено' : state === 'ok' ? 'працює' : state === 'error' ? 'помилка завантаження' : state === 'loading' ? 'завантажується' : 'очікує перезавантаження';
-        return 'v' + (plugin.version || '?') + ' · ' + label;
-    }
-
     function reload() {
         window.location.reload();
     }
 
     function notifyRestart() {
-        if (Lampa.Noty) Lampa.Noty.show('Перезавантажте застосунок, щоб застосувати зміни');
+        if (Lampa.Noty) Lampa.Noty.show('Щоб зміни спрацювали, перезавантажте Lampa');
     }
 
     function addParam(param) {
@@ -178,8 +172,8 @@
             field: { name: plugin.name, description: plugin.description || '' },
             onChange: notifyRestart,
             onRender: function (item) {
-                var text = (plugin.description ? plugin.description + ' · ' : '') + statusText(plugin);
-                item.find('.settings-param__descr').text(text);
+                var failed = statuses[plugin.id] === 'error';
+                item.find('.settings-param__descr').text((plugin.description || '') + (failed ? ' Не вдалося завантажити.' : ''));
             }
         });
         (queued[plugin.id] || []).forEach(function (param) { addParam(indent(param)); });
@@ -209,22 +203,22 @@
             section(group.name);
             group.plugins.forEach(pluginSwitch);
         });
-        section('Керування Watch Plugins');
+        section('Watch Plugins');
         addParam({
             param: { name: 'watch_plugins_about', type: 'static' },
-            field: { name: 'Версія менеджера', description: VERSION + '. Зміни вмикання діють після перезавантаження.' }
+            field: { name: 'Версія Watch Plugins', description: VERSION }
         });
         addParam({
             param: { name: KEY_BASE, type: 'input', values: '', 'default': '' },
-            field: { name: 'Адреса репозиторію', description: 'Порожньо: тека, звідки завантажено менеджер.' }
+            field: { name: 'Репозиторій плагінів', description: 'Звідки завантажувати плагіни. Порожньо — звідти, де лежить цей менеджер.' }
         });
         addParam({
             param: { name: KEY_EXTRA, type: 'input', values: '', 'default': '' },
-            field: { name: 'Додаткові плагіни (URL)', description: 'Адреси скриптів через пробіл або кому.' }
+            field: { name: 'Свої плагіни (URL)', description: 'Адреси додаткових скриптів через пробіл, наприклад домашній плагін.' }
         });
         addParam({
             param: { name: 'watch_plugins_reload', type: 'button' },
-            field: { name: 'Перезавантажити застосунок', description: 'Застосувати зміни вмикання плагінів.' },
+            field: { name: 'Перезавантажити Lampa', description: 'Потрібно після вмикання чи вимикання плагінів.' },
             onChange: reload
         });
     }

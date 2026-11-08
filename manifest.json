@@ -3,8 +3,8 @@
   "plugins": [
     {
       "id": "applecation",
-      "name": "Applecation",
-      "description": "Стиль картки в дусі Apple TV від DarkestClouds. Потрібен для «Деталі картки».",
+      "name": "Applecation: стиль Apple TV",
+      "description": "Новий вигляд картки фільму, як в Apple TV. Потрібен для «Режисер серед акторів».",
       "path": "https://darkestclouds.github.io/plugins/applecation/applecation.min.js",
       "version": "external",
       "default": false,
@@ -12,8 +12,8 @@
     },
     {
       "id": "card-details",
-      "name": "Деталі картки",
-      "description": "Режисер переходить у ряд акторів, зникають теги. Доповнення до Applecation.",
+      "name": "Режисер серед акторів",
+      "description": "Режисер стає першим у ряді акторів, зайві теги ховаються.",
       "path": "plugins/card-details/card-details.js",
       "version": "1.0.0",
       "default": true,
@@ -24,41 +24,41 @@
     },
     {
       "id": "streaming-tabs",
-      "name": "Вкладки стрімінгів",
-      "description": "Вкладки стрімінгових сервісів на головній: Netflix, Apple TV+, HBO та інші.",
+      "name": "Вкладки Netflix, HBO та ін.",
+      "description": "Додає на головну вкладки стрімінгів із їхніми добірками фільмів.",
       "path": "plugins/streaming-tabs/streaming-tabs.js",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "default": true,
       "category": "home"
     },
     {
       "id": "torserver-address",
-      "name": "Адреса TorrServer",
-      "description": "Примусово підставляє вашу адресу TorrServer замість збереженої в Lampa.",
+      "name": "Власна адреса TorrServer",
+      "description": "Підставляє вашу адресу TorrServer замість тієї, що збережена в Lampa.",
       "path": "plugins/torserver-address/torserver-address.js",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "default": false,
       "category": "torrents"
     },
     {
       "id": "ua-torrent-flow",
-      "name": "Торенти UA",
-      "description": "Зручний список торентів з озвучками та екран вибору файлів торента.",
+      "name": "Зручний список торентів",
+      "description": "Топ-3 роздачі, озвучки з Toloka та екран вибору файлів серіалу.",
       "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "default": true,
       "category": "torrents"
     },
     {
       "id": "trakt",
-      "name": "Trakt",
-      "description": "Рекомендації, список перегляду, календар і скробл Trakt через ваш власний додаток.",
+      "name": "Trakt: рекомендації та історія",
+      "description": "Рекомендації, список «Дивитись пізніше» і запис переглядів у ваш Trakt. Потрібен свій додаток Trakt.",
       "path": "plugins/trakt/trakt.js",
       "files": [
         "plugins/trakt/trakt-client.js",
         "plugins/trakt/trakt.js"
       ],
-      "version": "1.0.1",
+      "version": "1.0.2",
       "default": false,
       "category": "services"
     }
@@ -66,7 +66,7 @@
   "categories": [
     {
       "id": "card",
-      "name": "Картка фільму"
+      "name": "Вигляд картки фільму"
     },
     {
       "id": "home",
@@ -74,11 +74,11 @@
     },
     {
       "id": "torrents",
-      "name": "Торенти та плеєр"
+      "name": "Торенти та TorrServer"
     },
     {
       "id": "services",
-      "name": "Сервіси та облікові записи"
+      "name": "Облікові записи"
     }
   ]
 }

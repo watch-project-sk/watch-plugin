@@ -660,7 +660,7 @@
     function addSettings() {
         var params = [{
             param: { name: STORAGE_WATCH_REGION, type: 'select', values: { UA: 'Україна', US: 'США', EU: 'Європа' }, 'default': 'UA' },
-            field: { name: 'Регіон перегляду', description: 'Визначає, які сервіси й каталоги показувати у вкладках.' }
+            field: { name: 'Країна для каталогу', description: 'Для якої країни показувати, що де доступно: Україна, США чи Європа.' }
         }];
         if (window.WatchPlugins) return window.WatchPlugins.settings('streaming-tabs', params);
         if (!Lampa.SettingsApi) return;

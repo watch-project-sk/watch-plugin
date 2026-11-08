@@ -89,6 +89,14 @@ check('every input param in plugin sources declares string values', () => {
     });
 });
 
+check('manifest: descriptions fit two lines', () => {
+    const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+    manifest.plugins.forEach((plugin) => {
+        assert.ok(plugin.name.length <= 34, plugin.id + ' name too long: ' + plugin.name.length);
+        assert.ok(plugin.description.length <= 105, plugin.id + ' description too long: ' + plugin.description.length);
+    });
+});
+
 check('manifest: every plugin file exists and ids are unique', () => {
     const root = path.join(__dirname, '..');
     const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));

@@ -75,17 +75,17 @@
         var params = [
             {
                 param: { name: KEY_ENABLED, type: 'trigger', 'default': true },
-                field: { name: 'Підміняти адресу TorrServer', description: 'Працює, лише коли нижче вказано адресу.' },
+                field: { name: 'Підміняти адресу', description: 'Lampa завжди використовуватиме адресу нижче, навіть якщо в профілі інша.' },
                 onChange: apply
             },
             {
                 param: { name: KEY_ADDRESS, type: 'input', values: '', 'default': '' },
-                field: { name: 'Адреса TorrServer', description: 'Формат: адреса:порт. Порожньо: нічого не підміняється.' },
+                field: { name: 'Адреса TorrServer', description: 'Формат адреса:порт. Порожньо — нічого не підміняється.' },
                 onChange: apply
             },
             {
                 param: { name: KEY_ONE_LINK, type: 'trigger', 'default': true },
-                field: { name: 'Одна адреса для всіх запитів', description: 'Примусово вмикає режим «одне посилання».' },
+                field: { name: 'Режим «одне посилання»', description: 'Примусово вмикає в Lampa режим однієї спільної адреси TorrServer.' },
                 onChange: apply
             }
         ];
