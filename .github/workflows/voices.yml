@@ -1,0 +1,50 @@
+name: Collect voices
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      spike:
+        description: Only check that Toloka answers from this runner
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: voices
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ${{ vars.VOICES_RUNNER || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Spike
+        if: ${{ inputs.spike }}
+        env:
+          TOLOKA_COOKIE: ${{ secrets.TOLOKA_COOKIE }}
+        run: node scripts/spike.js
+      - name: Collect
+        if: ${{ !inputs.spike }}
+        env:
+          TOLOKA_COOKIE: ${{ secrets.TOLOKA_COOKIE }}
+          TOLOKA_LIST_URLS: ${{ vars.TOLOKA_LIST_URLS }}
+        run: node scripts/voices.js
+      - name: Commit data
+        if: ${{ !inputs.spike }}
+        run: |
+          git config user.name "voices-bot"
+          git config user.email "voices-bot@users.noreply.github.com"
+          git add data/voices
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "Update voices data"
+            git push
+          fi

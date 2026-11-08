@@ -1,0 +1,5 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="svg.play-icon { width: 16px; height: 16px; flex-shrink: 0; position: relative; overflow: hidden; border-radius: 0px; background: transparent; border: none; }">
+<path id="path.playback-icon-path { width: 11px; height: 12.39px; position: absolute; left: 3px; top: 1.8px; border-radius: 0px; fill: #ffffff; border: none; }" d="M3 2.803C3.00018 2.62755 3.04652 2.45524 3.13436 2.30336C3.2222 2.15148 3.34845 2.02539 3.50044 1.93774C3.65243 1.8501 3.82481 1.80398 4.00026 1.80403C4.17571 1.80407 4.34806 1.85027 4.5 1.938L13.5 7.133C13.6522 7.2207 13.7787 7.34697 13.8666 7.49909C13.9545 7.65121 14.0008 7.8238 14.0008 7.9995C14.0008 8.1752 13.9545 8.34779 13.8666 8.49991C13.7787 8.65203 13.6522 8.7783 13.5 8.866L4.5 14.062C4.34798 14.1498 4.17554 14.196 4.00001 14.196C3.82447 14.196 3.65203 14.1498 3.50001 14.062C3.34799 13.9742 3.22175 13.848 3.13398 13.696C3.04621 13.544 3 13.3715 3 13.196V2.803Z" fill="white" style="fill:white;fill-opacity:1;"/>
+</g>
+</svg>

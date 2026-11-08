@@ -1,0 +1,55 @@
+{
+  "name": "Watch Plugins",
+  "plugins": [
+    {
+      "id": "applecation",
+      "name": "Applecation",
+      "description": "Apple TV style card layout by DarkestClouds. Optional base for Card Details.",
+      "path": "https://darkestclouds.github.io/plugins/applecation/applecation.min.js",
+      "version": "external",
+      "default": false
+    },
+    {
+      "id": "card-details",
+      "name": "Card Details",
+      "description": "Moves the director into the cast row and removes tags from the card. Addon for Applecation.",
+      "path": "plugins/card-details/card-details.js",
+      "version": "1.0.0",
+      "default": true,
+      "requires": ["applecation"]
+    },
+    {
+      "id": "streaming-tabs",
+      "name": "Streaming Tabs",
+      "description": "Streaming service tabs on the home page (Netflix, Apple TV+, HBO and others).",
+      "path": "plugins/streaming-tabs/streaming-tabs.js",
+      "version": "1.0.0",
+      "default": true
+    },
+    {
+      "id": "torserver-address",
+      "name": "TorrServer Address",
+      "description": "Overrides the TorrServer address saved in Lampa.",
+      "path": "plugins/torserver-address/torserver-address.js",
+      "version": "1.0.0",
+      "default": false
+    },
+    {
+      "id": "ua-torrent-flow",
+      "name": "UA Torrent Flow",
+      "description": "Better torrent list with voice-over info and a torrent file screen.",
+      "path": "plugins/ua-torrent-flow/ua-torrent-flow.js",
+      "version": "2.1.0",
+      "default": true
+    },
+    {
+      "id": "trakt",
+      "name": "Trakt",
+      "description": "Trakt recommendations, watchlist, calendar and scrobbling with your own Trakt app.",
+      "path": "plugins/trakt/trakt.js",
+      "files": ["plugins/trakt/trakt-client.js", "plugins/trakt/trakt.js"],
+      "version": "1.0.0",
+      "default": false
+    }
+  ]
+}
