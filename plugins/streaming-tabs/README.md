@@ -1,9 +1,5 @@
-# Streaming Tabs
+# Netflix, HBO and other tabs
 
-Adds a tab row to the home page: Home, Netflix, Apple TV+, HBO, Prime Video, Disney+, Paramount+, NatGeo, Discovery, Marvel, DC. A tab shows rows of that service from TMDB. The "Now watching" row is hidden.
+Adds streaming service tabs to the home page (Netflix, Apple TV+, HBO, Prime Video, Disney+, Paramount+, NatGeo, Discovery, Marvel, DC). Uses TMDB through Lampa.
 
-Settings (Watch Plugins section):
-
-- **Watch region**: Ukraine, USA or Europe.
-
-Uses only TMDB through Lampa, no server is needed.
+Setting: country for the catalog (Ukraine, USA or Europe).
