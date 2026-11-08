@@ -1,9 +1,5 @@
-# TorrServer Address
+# Custom TorrServer address
 
-Forces the TorrServer address saved in Lampa to the address you enter, so a profile synced from another device does not break playback.
+Keeps the TorrServer address in Lampa equal to the one you enter.
 
-Settings (Watch Plugins section):
-
-- **Override TorrServer address**: master switch.
-- **TorrServer address**: `host:port`. Empty means nothing is overridden. The value is saved and applied immediately.
-- **One address for all requests**: also forces the "one link" mode.
+Settings: on/off, address as `host:port` (empty means no override), "one link" mode.
