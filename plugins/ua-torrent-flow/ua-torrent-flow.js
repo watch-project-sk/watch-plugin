@@ -6,7 +6,7 @@
 
     var ID = 'ua_torrent_flow';
     var NAME = 'UA Torrent Flow';
-    var VERSION = '2.1.0';
+    var VERSION = '2.1.1';
     var TOP_COUNT = 3;
     var lastMovie = null;
     var SCRIPT_SRC = (typeof document !== 'undefined' && document.currentScript && document.currentScript.src) || '';
@@ -827,7 +827,7 @@
 
     function addSettings() {
         var params = [{
-            param: { name: KEY_VOICES_SERVICE, type: 'input', 'default': '' },
+            param: { name: KEY_VOICES_SERVICE, type: 'input', values: '', 'default': '' },
             field: { name: 'Адреса сервісу озвучок', description: 'Необов\'язково. Порожньо: озвучки беруться зі статичних даних репозиторію.' }
         }];
         if (window.WatchPlugins) return window.WatchPlugins.settings('ua-torrent-flow', params);

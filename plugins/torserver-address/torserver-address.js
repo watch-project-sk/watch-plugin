@@ -79,7 +79,7 @@
                 onChange: apply
             },
             {
-                param: { name: KEY_ADDRESS, type: 'input', 'default': '' },
+                param: { name: KEY_ADDRESS, type: 'input', values: '', 'default': '' },
                 field: { name: 'Адреса TorrServer', description: 'Формат: адреса:порт. Порожньо: нічого не підміняється.' },
                 onChange: apply
             },
