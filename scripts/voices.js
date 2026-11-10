@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseRelease, isLoggedIn } = require('./toloka-parse');
+const { getCookie } = require('./toloka-auth');
 
 const SHARD_SIZE = 1000;
 const OK_TTL_MS = 14 * 24 * 3600 * 1000;
@@ -136,14 +137,20 @@ async function discover(cookie, listUrls, seedFile) {
 }
 
 async function main() {
-    const cookie = String(process.env.TOLOKA_COOKIE || '').trim();
+    let cookie;
+    try {
+        cookie = await getCookie(process.env);
+    } catch (e) {
+        console.error(e.code === 'LOGIN_FAILED' ? 'Toloka login failed: check TOLOKA_USER and TOLOKA_PASS' : 'Toloka login error: ' + e.message);
+        process.exit(e.code === 'LOGIN_FAILED' ? 2 : 3);
+    }
     const dir = process.env.VOICES_DIR || path.join(__dirname, '..', 'data', 'voices');
     const seedFile = process.env.VOICES_SEED || path.join(__dirname, '..', 'data', 'seed-ids.txt');
     const limit = Number(process.env.VOICES_LIMIT || 150);
     const delay = Number(process.env.VOICES_DELAY_MS || 700);
     const listUrls = String(process.env.TOLOKA_LIST_URLS || '').split(/\s+/).filter(Boolean);
     if (!cookie) {
-        console.error('TOLOKA_COOKIE is not set');
+        console.error('TOLOKA_USER and TOLOKA_PASS (or TOLOKA_COOKIE) are not set');
         process.exit(1);
     }
     const store = createStore(dir);

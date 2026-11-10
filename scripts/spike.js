@@ -1,14 +1,21 @@
 'use strict';
 
 const { parseRelease, isLoggedIn } = require('./toloka-parse');
+const { getCookie } = require('./toloka-auth');
 
 const UA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36';
 
 async function main() {
-    const cookie = String(process.env.TOLOKA_COOKIE || '').trim();
+    let cookie;
+    try {
+        cookie = await getCookie(process.env);
+    } catch (e) {
+        console.error(e.message);
+        process.exit(e.code === 'LOGIN_FAILED' ? 2 : 3);
+    }
     const id = String(process.env.SPIKE_ID || '687211');
     if (!cookie) {
-        console.error('TOLOKA_COOKIE is not set');
+        console.error('TOLOKA_USER and TOLOKA_PASS (or TOLOKA_COOKIE) are not set');
         process.exit(1);
     }
     const res = await fetch('https://toloka.to/t' + id, { headers: { Cookie: cookie, 'User-Agent': UA, 'Accept-Language': 'uk,en;q=0.8' } });
