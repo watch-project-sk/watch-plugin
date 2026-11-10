@@ -6,6 +6,7 @@ const path = require('path');
 const assert = require('assert');
 const { parseRelease } = require('../scripts/toloka-parse');
 const voices = require('../scripts/voices');
+const auth = require('../scripts/toloka-auth');
 
 let failed = 0;
 
@@ -74,6 +75,18 @@ check('voices: store writes sorted shards and reloads them', () => {
     fs.rmSync(dir, { recursive: true, force: true });
 });
 
+check('auth: parseSetCookies keeps live cookies and drops deleted or expired ones', () => {
+    const jar = auth.parseSetCookies([
+        'toloka_sid=abc123; path=/; HttpOnly',
+        'toloka_data=a%3A2%3A%7Bs%3A6; expires=Wed, 01 Jan 2099 00:00:00 GMT; path=/',
+        'old=zzz; path=/',
+        'old=deleted; expires=Thu, 01 Jan 1970 00:00:01 GMT; path=/',
+        'gone=1; expires=Thu, 01 Jan 1970 00:00:01 GMT'
+    ]);
+    assert.deepStrictEqual(Object.keys(jar), ['toloka_sid', 'toloka_data']);
+    assert.strictEqual(auth.jarToHeader(jar), 'toloka_sid=abc123; toloka_data=a%3A2%3A%7Bs%3A6');
+});
+
 check('every input param in plugin sources declares string values', () => {
     const root = path.join(__dirname, '..');
     const files = ['watch-plugins.js'];
@@ -130,6 +143,14 @@ check('no private addresses or secrets in published files', () => {
 });
 
 (async () => {
+    try {
+        assert.strictEqual(await auth.getCookie({ TOLOKA_COOKIE: ' a=b ' }), 'a=b');
+        assert.strictEqual(await auth.getCookie({}), '');
+        console.log('ok   auth: getCookie falls back to TOLOKA_COOKIE without credentials');
+    } catch (e) {
+        failed++;
+        console.log('FAIL auth: getCookie fallback', e.message);
+    }
     failed += await require('./trakt-client.test.js')();
     failed += await require('./manager.test.js')();
     failed += await require('./torserver.test.js')();

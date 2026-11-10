@@ -28,11 +28,15 @@ jobs:
       - name: Spike
         if: ${{ inputs.spike }}
         env:
+          TOLOKA_USER: ${{ secrets.TOLOKA_USER }}
+          TOLOKA_PASS: ${{ secrets.TOLOKA_PASS }}
           TOLOKA_COOKIE: ${{ secrets.TOLOKA_COOKIE }}
         run: node scripts/spike.js
       - name: Collect
         if: ${{ !inputs.spike }}
         env:
+          TOLOKA_USER: ${{ secrets.TOLOKA_USER }}
+          TOLOKA_PASS: ${{ secrets.TOLOKA_PASS }}
           TOLOKA_COOKIE: ${{ secrets.TOLOKA_COOKIE }}
           TOLOKA_LIST_URLS: ${{ vars.TOLOKA_LIST_URLS }}
         run: node scripts/voices.js
